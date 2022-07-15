@@ -7,7 +7,7 @@ import  authorize  from '../middleware/AuthorizationMiddleware';
 import {CreateEmployeeDto} from '../dto/CreateEmployee';
 import validationMiddleware from '../middleware/validationmiddleware';
 import { UpdateEmployeeDto } from "../dto/UpdateEmployee";
-
+import {Roles} from '../constants/Roles'
 
 
 class EmployeeController extends AbstractController {
@@ -17,9 +17,7 @@ class EmployeeController extends AbstractController {
    
   }
   protected initializeRoutes() {
-    enum Roles{
-      ADMIN="admin",HR="hr",ENGINEER="engineer",MANAGER="manager"};
-    
+      
     this.router.get(`${this.path}`, authorize(Object.values(Roles)),this.getAllEmployees);
     this.router.get(`${this.path}/:id`,authorize(Object.values(Roles)), this.getEmployeeById);
     this.router.put(`${this.path}`, authorize([Roles.ADMIN,Roles.HR]),validationMiddleware(UpdateEmployeeDto,APP_CONSTANTS.body),this.updateEmployeeById);
